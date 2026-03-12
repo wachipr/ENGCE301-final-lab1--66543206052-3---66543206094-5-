@@ -1,46 +1,13 @@
-# รายชื่อสมาชิก
-**66543206052-3 นางสาววชิรานีย์ ประเสริฐศรี**
-**66543206094-5 นายอานุภาพ เฑียรประยูร**
+## รายชื่อสมาชิก
+**ชื่อ-นามสกุล:** วชิรานีย์ ประเสริฐศรี
+**รหัสนักศึกษา:** 66543206052-3
+
+**ชื่อ-นามสกุล:** อานุภาพ เฑียรประยูร
+**รหัสนักศึกษา:** 66543206094-5
 
 ## Architecture diagram
-```mermaid
-graph TB
-    subgraph "External"
-        Client[Client Browser] -->|HTTPS 443| Nginx
-        Client -->|HTTP 80| Redirect[HTTP → HTTPS Redirect]
-    end
+[Architecture Diagram](./drawio-architecture.drawio)
 
-    subgraph "DMZ / Reverse Proxy"
-        Nginx[Nginx API Gateway] -->|Rate Limit| Auth[Auth Service:3001]
-        Nginx -->|Rate Limit| Task[Task Service:3002]
-        Nginx -->|Rate Limit| Log[Log Service:3003]
-        Nginx -->|Static Files| Frontend[Frontend:80]
-        
-        Nginx -->|Internal Log| Log
-    end
-
-    subgraph "Internal Services"
-        Auth -->|JWT Verify| Task
-        Auth -->|JWT Verify| Log
-        Task -->|DB Query| PG[(PostgreSQL)]
-        Log  -->|DB Query| PG
-        Auth -->|DB Query| PG
-        Frontend -->|API Calls| Nginx
-    end
-
-    subgraph "Monitoring"
-        Dashboard[Log Dashboard] -->|Read Logs| Log
-        Dashboard -->|JWT Required| Nginx
-    end
-
-    classDef secure fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef internal fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef external fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    
-    class Client,Redirect external
-    class Nginx,Auth,Task,Log,Frontend secure
-    class PG,Dashboard internal
-```
 ## การติดตั้งและใช้งาน
 
 ### ขั้นตอนการติดตั้ง
